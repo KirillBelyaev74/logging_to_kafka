@@ -8,7 +8,7 @@ data class Logging(
     val url: String? = null,
     val methodName: String? = null,
     val className: String? = null,
-    val typeMessage: RequestResponse? = null,
+    val typeMessage: TypeMessage? = null,
     val requestResponse: String? = null,
     val error: String? = null
 )

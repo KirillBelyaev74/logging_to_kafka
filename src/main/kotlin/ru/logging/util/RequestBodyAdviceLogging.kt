@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter
 import ru.logging.model.Logging
 import ru.logging.model.LoggingEvent
-import ru.logging.model.RequestResponse
+import ru.logging.model.TypeMessage
 import java.lang.reflect.Type
 import javax.servlet.http.HttpServletRequest
 
@@ -41,7 +41,7 @@ open class RequestBodyAdviceLogging: RequestBodyAdviceAdapter() {
             projectName = projectName,
             url = request.requestURI,
             methodName = methodParameter.method?.name,
-            typeMessage = RequestResponse.REQUEST,
+            typeMessage = TypeMessage.REQUEST,
             requestResponse = body.toString()
         )
         eventPublisher.publishEvent(LoggingEvent(this, log))

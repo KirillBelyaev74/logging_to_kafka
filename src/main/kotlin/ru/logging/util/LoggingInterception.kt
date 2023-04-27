@@ -9,7 +9,7 @@ import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import ru.logging.model.Logging
 import ru.logging.model.LoggingEvent
-import ru.logging.model.RequestResponse
+import ru.logging.model.TypeMessage
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -28,7 +28,7 @@ open class LoggingInterception: HandlerInterceptor {
                 projectName = projectName,
                 url = request.requestURI,
                 methodName = request.method,
-                typeMessage = RequestResponse.REQUEST
+                typeMessage = TypeMessage.REQUEST
             )
             eventPublisher.publishEvent(LoggingEvent(this, log))
         }

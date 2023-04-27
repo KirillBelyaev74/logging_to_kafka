@@ -2,8 +2,8 @@ package ru.logging.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import ru.logging.aop.LogAspect
 import ru.logging.aop.LogAspectGeneral
-import ru.logging.aop.LogAspectService
 import ru.logging.service.LoggingListener
 import ru.logging.util.GlobalRestControllerExceptionHandler
 import ru.logging.util.LoggingInterception
@@ -14,8 +14,8 @@ import ru.logging.util.ResponseBodyAdviceLogging
 open class Configuration {
 
     @Bean
-    open fun logAspectService(): LogAspectService {
-        return LogAspectService()
+    open fun logAspectService(): LogAspect {
+        return LogAspect()
     }
 
     @Bean

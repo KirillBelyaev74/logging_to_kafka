@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 import ru.logging.model.Logging
 import ru.logging.model.LoggingEvent
-import ru.logging.model.RequestResponse
+import ru.logging.model.TypeMessage
 
 @RestControllerAdvice
 open class ResponseBodyAdviceLogging<R>: ResponseBodyAdvice<R> {
@@ -40,7 +40,7 @@ open class ResponseBodyAdviceLogging<R>: ResponseBodyAdvice<R> {
                 projectName = projectName,
                 url = request.uri.path,
                 methodName = request.method?.name,
-                typeMessage = RequestResponse.RESPONSE,
+                typeMessage = TypeMessage.RESPONSE,
                 requestResponse = if (body != null && body is List<*>) "size ${body.size}" else body.toString()
             )
             eventPublisher.publishEvent(LoggingEvent(this, log))

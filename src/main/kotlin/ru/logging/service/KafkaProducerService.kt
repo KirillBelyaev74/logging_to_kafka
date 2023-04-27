@@ -1,6 +1,5 @@
 package ru.logging.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
@@ -13,7 +12,6 @@ class KafkaProducerService(private val kafkaTemplate: KafkaTemplate<String, Stri
     private lateinit var topicName: String
 
     fun sendLog(logging: Logging) {
-        val json = ObjectMapper().writer().withDefaultPrettyPrinter().writeValueAsString(logging)
-        kafkaTemplate.send(topicName, json)
+        kafkaTemplate.send(topicName, logging.toString())
     }
 }

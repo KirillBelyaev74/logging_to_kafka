@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 import ru.logging.dropNamePackage
 import ru.logging.model.Logging
 import ru.logging.model.LoggingEvent
-import ru.logging.model.RequestResponse
+import ru.logging.model.TypeMessage
 
 @Component
 open class LogAspectGeneral {
@@ -20,7 +20,7 @@ open class LogAspectGeneral {
     @Value("\${spring.kafka.topic.name}")
     private lateinit var projectName: String
 
-    fun log(jp: JoinPoint, requestResponse: RequestResponse, body: String) {
+    fun log(jp: JoinPoint, requestResponse: TypeMessage, body: String) {
         val methodSignature = jp.signature as MethodSignature
         val log = Logging(
             projectName = projectName,
@@ -38,7 +38,6 @@ open class LogAspectGeneral {
             projectName = projectName,
             className = methodSignature.declaringTypeName.dropNamePackage(),
             methodName = methodSignature.name,
-            typeMessage = RequestResponse.RESPONSE,
             error = exception.message
         )
         eventPublisher.publishEvent(LoggingEvent(this, log))
