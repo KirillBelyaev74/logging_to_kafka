@@ -2,7 +2,7 @@ package ru.logging.model
 
 import ru.logging.annotation.LogFieldSkip
 
-class ObjectToStringForLog {
+open class ObjectToStringForLog {
 
     fun objectToString(): String {
         return this::class.java.declaredFields
@@ -13,7 +13,7 @@ class ObjectToStringForLog {
                 when (val any = it.get(this)) {
                     is Collection<*> -> any.size.toString()
                     is Map<*, *> -> any.size.toString()
-                    else -> "${it.name}: $it"
+                    else -> "${it.name}: $any"
                 }
             }.toString()
     }

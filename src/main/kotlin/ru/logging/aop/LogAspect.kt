@@ -27,17 +27,17 @@ open class LogAspect {
         parameterAnnotations.forEachIndexed { i, any ->
             if (any.isEmpty()) args.add(jp.args[i])
         }
-        val requestResponse = jp.args.joinToString(prefix = "[", postfix = "]")
+        val requestResponse = args.joinToString(prefix = "[", postfix = "]")
         logAspectGeneral.log(jp, TypeMessage.REQUEST, requestResponse)
     }
 
     @AfterReturning(pointcut = "aspectLog()", returning = "response")
     fun afterLogOk(jp: JoinPoint, response: Any) {
         val requestResponse = when (response) {
-//            is Collection<*> -> "size: ${response.size}"
-//            is Map<*, *> -> "size: ${response.size}"
+            is Collection<*> -> "size: ${response.size}"
+            is Map<*, *> -> "size: ${response.size}"
             is ObjectToStringForLog -> response.objectToString()
-            else -> ""
+            else -> "Not extended ObjectToStringForLog"
         }
         logAspectGeneral.log(jp, TypeMessage.RESPONSE, requestResponse)
     }
