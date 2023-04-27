@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import ru.logging.model.LoggingEvent
 
 @Component
-open class LoggingListener: ApplicationListener<LoggingEvent> {
+open class LoggingListener : ApplicationListener<LoggingEvent> {
 
     @EventListener
     override fun onApplicationEvent(event: LoggingEvent) {

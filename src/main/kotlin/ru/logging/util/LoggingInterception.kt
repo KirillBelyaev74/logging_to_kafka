@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-open class LoggingInterception: HandlerInterceptor {
+open class LoggingInterception : HandlerInterceptor {
 
     @Autowired
     private lateinit var eventPublisher: ApplicationEventPublisher

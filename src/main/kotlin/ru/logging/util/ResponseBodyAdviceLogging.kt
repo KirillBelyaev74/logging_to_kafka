@@ -15,7 +15,7 @@ import ru.logging.model.LoggingEvent
 import ru.logging.model.TypeMessage
 
 @RestControllerAdvice
-open class ResponseBodyAdviceLogging<R>: ResponseBodyAdvice<R> {
+open class ResponseBodyAdviceLogging<R> : ResponseBodyAdvice<R> {
 
     @Autowired
     private lateinit var eventPublisher: ApplicationEventPublisher

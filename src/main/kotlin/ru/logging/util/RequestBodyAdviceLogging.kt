@@ -15,7 +15,7 @@ import java.lang.reflect.Type
 import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
-open class RequestBodyAdviceLogging: RequestBodyAdviceAdapter() {
+open class RequestBodyAdviceLogging : RequestBodyAdviceAdapter() {
 
     @Autowired
     private lateinit var eventPublisher: ApplicationEventPublisher
@@ -26,7 +26,11 @@ open class RequestBodyAdviceLogging: RequestBodyAdviceAdapter() {
     @Value("\${spring.kafka.topic.name}")
     private lateinit var projectName: String
 
-    override fun supports(methodParameter: MethodParameter, targetType: Type, converterType: Class<out HttpMessageConverter<*>>): Boolean {
+    override fun supports(
+        methodParameter: MethodParameter,
+        targetType: Type,
+        converterType: Class<out HttpMessageConverter<*>>
+    ): Boolean {
         return true
     }
 
