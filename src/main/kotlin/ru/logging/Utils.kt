@@ -1,5 +1,3 @@
 package ru.logging
 
-fun String.dropNamePackage(): String {
-    return this.drop(this.lastIndexOf(".") + 1)
-}
+fun String.dropNamePackage(): String  = this.drop(this.lastIndexOf(".") + 1)
