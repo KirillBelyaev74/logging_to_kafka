@@ -2,8 +2,10 @@ package ru.logging.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.kafka.core.KafkaTemplate
 import ru.logging.aop.LogAspect
 import ru.logging.aop.LogAspectGeneral
+import ru.logging.service.KafkaProducerService
 import ru.logging.service.LoggingListener
 import ru.logging.util.GlobalRestControllerExceptionHandler
 import ru.logging.util.LoggingInterception
@@ -46,5 +48,10 @@ open class Configuration {
     @Bean
     open fun <R> responseBodyAdviceLogging(): ResponseBodyAdviceLogging<R> {
         return ResponseBodyAdviceLogging<R>();
+    }
+
+    @Bean
+    open fun kafkaProducer(kafkaTemplate: KafkaTemplate<String, String>): KafkaProducerService {
+        return KafkaProducerService(kafkaTemplate)
     }
 }

@@ -2,15 +2,14 @@ package ru.logging.util
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpInputMessage
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter
 import ru.logging.model.Logging
-import ru.logging.model.LoggingEvent
 import ru.logging.model.TypeMessage
+import ru.logging.service.KafkaProducerService
 import java.lang.reflect.Type
 import javax.servlet.http.HttpServletRequest
 
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 open class RequestBodyAdviceLogging : RequestBodyAdviceAdapter() {
 
     @Autowired
-    private lateinit var eventPublisher: ApplicationEventPublisher
+    private lateinit var kafkaProducer: KafkaProducerService
 
     @Autowired
     private lateinit var request: HttpServletRequest
@@ -48,7 +47,7 @@ open class RequestBodyAdviceLogging : RequestBodyAdviceAdapter() {
             typeMessage = TypeMessage.REQUEST,
             requestResponse = body.toString()
         )
-        eventPublisher.publishEvent(LoggingEvent(this, log))
+        kafkaProducer.sendLog(log)
         return body
     }
 }

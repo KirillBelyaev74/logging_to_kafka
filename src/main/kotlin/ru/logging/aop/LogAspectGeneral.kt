@@ -4,18 +4,17 @@ import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.reflect.MethodSignature
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import ru.logging.dropNamePackage
 import ru.logging.model.Logging
-import ru.logging.model.LoggingEvent
 import ru.logging.model.TypeMessage
+import ru.logging.service.KafkaProducerService
 
 @Component
 open class LogAspectGeneral {
 
     @Autowired
-    private lateinit var eventPublisher: ApplicationEventPublisher
+    private lateinit var kafkaProducer: KafkaProducerService
 
     @Value("\${spring.kafka.topic.name}")
     private lateinit var projectName: String
@@ -29,7 +28,7 @@ open class LogAspectGeneral {
             typeMessage = requestResponse,
             requestResponse = body
         )
-        eventPublisher.publishEvent(LoggingEvent(this, log))
+        kafkaProducer.sendLog(log)
     }
 
     fun logError(jp: JoinPoint, exception: Exception) {
@@ -40,6 +39,6 @@ open class LogAspectGeneral {
             methodName = methodSignature.name,
             error = exception.message
         )
-        eventPublisher.publishEvent(LoggingEvent(this, log))
+        kafkaProducer.sendLog(log)
     }
 }

@@ -2,21 +2,20 @@ package ru.logging.util
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestController
 import ru.logging.model.Logging
-import ru.logging.model.LoggingEvent
+import ru.logging.service.KafkaProducerService
 import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice(annotations = [RestController::class])
 open class GlobalRestControllerExceptionHandler {
 
     @Autowired
-    private lateinit var eventPublisher: ApplicationEventPublisher
+    private lateinit var kafkaProducer: KafkaProducerService
 
     @Autowired
     private lateinit var request: HttpServletRequest
@@ -33,7 +32,7 @@ open class GlobalRestControllerExceptionHandler {
             methodName = request.method,
             error = e.message
         )
-        eventPublisher.publishEvent(LoggingEvent(this, log))
+        kafkaProducer.sendLog(log)
         val response = mapOf("error" to e.message)
         return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
     }

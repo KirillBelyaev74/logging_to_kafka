@@ -2,14 +2,13 @@ package ru.logging.util
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import ru.logging.model.Logging
-import ru.logging.model.LoggingEvent
 import ru.logging.model.TypeMessage
+import ru.logging.service.KafkaProducerService
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
 open class LoggingInterception : HandlerInterceptor {
 
     @Autowired
-    private lateinit var eventPublisher: ApplicationEventPublisher
+    private lateinit var kafkaProducer: KafkaProducerService
 
     @Value("\${spring.kafka.topic.name}")
     private lateinit var projectName: String
@@ -30,7 +29,7 @@ open class LoggingInterception : HandlerInterceptor {
                 methodName = request.method,
                 typeMessage = TypeMessage.REQUEST
             )
-            eventPublisher.publishEvent(LoggingEvent(this, log))
+            kafkaProducer.sendLog(log)
         }
         return true
     }
