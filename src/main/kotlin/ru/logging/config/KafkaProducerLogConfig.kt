@@ -2,7 +2,6 @@ package ru.logging.config
 
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.core.DefaultKafkaProducerFactory
@@ -12,12 +11,6 @@ import org.springframework.kafka.support.converter.StringJsonMessageConverter
 
 @Configuration
 class KafkaProducerLogConfig {
-
-    @Value("\${spring.kafka.bootstrap-servers}")
-    private lateinit var kafkaServer: String
-
-    @Value("\${spring.kafka.producer.group-id}")
-    private lateinit var kafkaGroupId: String
 
     @Bean
     fun producerFactory(): ProducerFactory<String, String> {
@@ -34,10 +27,8 @@ class KafkaProducerLogConfig {
     @Bean
     fun producerConfigs(): Map<String, Any> {
         val props: MutableMap<String, Any> = HashMap()
-        props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaServer
         props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
-        props[ProducerConfig.CLIENT_ID_CONFIG] = kafkaGroupId
         return props
     }
 }
