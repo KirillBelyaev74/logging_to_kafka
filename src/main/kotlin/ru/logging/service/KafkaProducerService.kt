@@ -12,6 +12,6 @@ class KafkaProducerService(private val kafkaTemplate: KafkaTemplate<String, Stri
     private lateinit var topicName: String
 
     fun sendLog(logging: Logging) {
-        kafkaTemplate.send(topicName, logging.toString())
+        kafkaTemplate.send(topicName, logging.setLocalDateTimeFormatter().toString())
     }
 }
